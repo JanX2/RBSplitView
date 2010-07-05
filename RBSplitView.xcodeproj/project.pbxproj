@@ -129,7 +129,6 @@
 		3D50A3031162D552002A5832 /* SampleApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SampleApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D50A3141162D61C002A5832 /* liblibRBSplitView.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibRBSplitView.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D50A34D1162D826002A5832 /* SampleApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SampleApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		3D50A34F1162D826002A5832 /* SampleApp-Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "SampleApp-Info copy.plist"; path = "Sample App/SampleApp-Info copy.plist"; sourceTree = "<group>"; };
 		8D1AC9730486D14A00FE50C9 /* Plugin-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Plugin-Info.plist"; path = "Plugin/Plugin-Info.plist"; sourceTree = "<group>"; };
 		D500FD5608170D550085E138 /* Programming Topics.rtfd */ = {isa = PBXFileReference; lastKnownFileType = wrapper.rtfd; name = "Programming Topics.rtfd"; path = "Documentation/Programming Topics.rtfd"; sourceTree = "<group>"; };
 		D508879A0AA1D2A100F4ECB3 /* RB.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = RB.xcconfig; sourceTree = "<group>"; };
@@ -294,7 +293,6 @@
 				D5EA8A2F074CF6DE00AE807E /* main.m */,
 				D5EA8A0B074CF5AB00AE807E /* SampleApp-Info.plist */,
 				D5118C811092E1B50074C31C /* SampleApp.nib */,
-				3D50A34F1162D826002A5832 /* SampleApp-Info copy.plist */,
 			);
 			name = "Sample App";
 			sourceTree = "<group>";
@@ -1031,7 +1029,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_ENABLE_OBJC_GC = required;
-				INFOPLIST_FILE = "Sample App/SampleApp-Info copy.plist";
+				INFOPLIST_FILE = "Sample App/SampleApp-Info.plist";
 				PREBINDING = NO;
 				PRODUCT_NAME = SampleApp;
 			};
@@ -1041,7 +1039,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_ENABLE_OBJC_GC = required;
-				INFOPLIST_FILE = "Sample App/SampleApp-Info copy.plist";
+				INFOPLIST_FILE = "Sample App/SampleApp-Info.plist";
 				PREBINDING = NO;
 				PRODUCT_NAME = SampleApp;
 			};
@@ -1051,7 +1049,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_ENABLE_OBJC_GC = required;
-				INFOPLIST_FILE = "Sample App/SampleApp-Info copy.plist";
+				INFOPLIST_FILE = "Sample App/SampleApp-Info.plist";
 				PREBINDING = NO;
 				PRODUCT_NAME = SampleApp;
 			};
@@ -1061,7 +1059,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_ENABLE_OBJC_GC = required;
-				INFOPLIST_FILE = "Sample App/SampleApp-Info copy.plist";
+				INFOPLIST_FILE = "Sample App/SampleApp-Info.plist";
 				PREBINDING = NO;
 				PRODUCT_NAME = SampleApp;
 			};
