@@ -138,7 +138,7 @@
 		D51189BA108E8C910074C31C /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Plugin/English.lproj/RBSplitViewInspector.xib; sourceTree = "<group>"; };
 		D51189BC108E8C910074C31C /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Plugin/English.lproj/RBSplitViewPlugin.xib; sourceTree = "<group>"; };
 		D51189BE108E8C910074C31C /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Plugin/English.lproj/RBSplitViewPreferences.xib; sourceTree = "<group>"; };
-		D5118A9210900BD70074C31C /* main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = main.h; sourceTree = "<group>"; };
+		D5118A9210900BD70074C31C /* main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = main.h; path = "Sample App/main.h"; sourceTree = "<group>"; };
 		D5118C2C109297A00074C31C /* RBSplitView.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RBSplitView.png; path = Plugin/RBSplitView.png; sourceTree = "<group>"; };
 		D5118C821092E1B50074C31C /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = "Sample App/English.lproj/SampleApp.nib"; sourceTree = "<group>"; };
 		D51D05F407FF2A55001EE379 /* RBSplitSubview.classdescription */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.ibClassDescription; name = RBSplitSubview.classdescription; path = Plugin/RBSplitSubview.classdescription; sourceTree = "<group>"; };
