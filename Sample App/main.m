@@ -1,33 +1,23 @@
 //
 //  main.m
 //
-//	RBSplitView sample app version 1.1.4
+//	RBSplitView sample app version 1.2
 //  RBSplitView
 //
 //  Created by Rainer Brockerhoff on 01/11/2004.
-//  Copyright 2004-2006 Rainer Brockerhoff.
+//  Copyright 2004-2009 Rainer Brockerhoff.
 //	Some Rights Reserved under the Creative Commons Attribution License, version 2.5, and/or the MIT License.
 //
 
-#import <Cocoa/Cocoa.h>
-#import "RBSplitView.h"
+#import "main.h"
 
-@interface MyAppDelegate:NSObject {
-	IBOutlet RBSplitSubview* firstSplit;
-	IBOutlet RBSplitView* secondSplit;
-	IBOutlet RBSplitView* thirdSplit;
-	IBOutlet RBSplitView* lowerSplit;
-	IBOutlet RBSplitView* mySplitView;
-	IBOutlet NSButton* myButton;
-	IBOutlet NSView* dragView;
-	IBOutlet RBSplitSubview* nestedSplit;
-}
-@end
+// Number of pixels to widen the lowerSplit view's divider for dragging/cursor
+#define WIDEN (8)
 
 @implementation MyAppDelegate
 
 // This keeps firstSplit and nestedSplit the same size whenever the window is resized.
-- (void)splitView:(RBSplitView*)sender wasResizedFrom:(float)oldDimension to:(float)newDimension {
+- (void)splitView:(RBSplitView*)sender wasResizedFrom:(CGFloat)oldDimension to:(CGFloat)newDimension {
 	if (sender==mySplitView) {
 		[sender adjustSubviewsExcepting:firstSplit];
 	} else if (sender==secondSplit) {
@@ -65,7 +55,7 @@
 }
 
 // This sets the menu item titles according to the state of the first subview and second subviews.
-- (BOOL)validateMenuItem:(id<NSMenuItem>)menuItem {
+- (BOOL)validateMenuItem:(NSMenuItem*)menuItem {
 	SEL selector = [menuItem action];
 	if (selector==@selector(firstAction:)) {
 		switch ([firstSplit status]) {
@@ -91,7 +81,7 @@
 }
 
 // This slows the animation down to 1/5th the speed when the shift key is held down.
-- (NSTimeInterval)splitView:(RBSplitView*)sender willAnimateSubview:(RBSplitSubview*)subview withDimension:(float)dimension {
+- (NSTimeInterval)splitView:(RBSplitView*)sender willAnimateSubview:(RBSplitSubview*)subview withDimension:(CGFloat)dimension {
 // This is the default speed.
 	NSTimeInterval duration = 0.2*dimension/150;
 	if ([[NSApp currentEvent] modifierFlags]&NSShiftKeyMask) {
@@ -101,33 +91,61 @@
 }
 
 // This makes it possible to drag the first divider around by the dragView.
-- (unsigned int)splitView:(RBSplitView*)sender dividerForPoint:(NSPoint)point inSubview:(RBSplitSubview*)subview {
+- (NSUInteger)splitView:(RBSplitView*)sender dividerForPoint:(NSPoint)point inSubview:(RBSplitSubview*)subview {
 	if (subview==firstSplit) {
 		if ([dragView mouse:[dragView convertPoint:point fromView:sender] inRect:[dragView bounds]]) {
 			return 0;	// [firstSplit position], which we assume to be zero
 		}
-	} else if (subview==secondSplit) {
-//		return 1;
+	// This widens the dragging region for the lowerSplit view/
+	} else  if (sender==lowerSplit) {
+		NSRect lead = [subview frame];
+		NSRect trail = lead;
+		unsigned pos = [subview position];
+		BOOL ishor = [sender isHorizontal];
+		CGFloat dim = DIM(trail.size);
+		DIM(trail.origin) += dim-WIDEN;
+		DIM(trail.size) = WIDEN;
+		DIM(lead.size) = WIDEN;
+		if ([sender mouse:point inRect:lead]&&(pos>0)) {
+			return pos-1;
+		} else if ([sender mouse:point inRect:trail]&&(pos<[sender numberOfSubviews]-1)) {
+			return pos;
+		}
 	}
 	return NSNotFound;
 }
 
 // This makes dragging any divider resize the window while the option key is held down.
 // However, it doesn't work for RBSplitViews nested more than one level, so we check for that.
-- (BOOL)splitView:(RBSplitView*)sender shouldResizeWindowForDivider:(unsigned int)divider betweenView:(RBSplitSubview*)leading andView:(RBSplitSubview*)trailing willGrow:(BOOL)grow {
+- (BOOL)splitView:(RBSplitView*)sender shouldResizeWindowForDivider:(NSUInteger)divider betweenView:(RBSplitSubview*)leading andView:(RBSplitSubview*)trailing willGrow:(BOOL)grow {
 	return (sender!=lowerSplit)&&(([[NSApp currentEvent] modifierFlags]&NSAlternateKeyMask)!=0);
 }
 
 // This changes the cursor when it's over the dragView.
-- (NSRect)splitView:(RBSplitView*)sender cursorRect:(NSRect)rect forDivider:(unsigned int)divider {
-	if (divider==0) {
+- (NSRect)splitView:(RBSplitView*)sender cursorRect:(NSRect)rect forDivider:(NSUInteger)divider {
+	if ((sender==mySplitView)&&(divider==0)) {
 		[sender addCursorRect:[dragView convertRect:[dragView bounds] toView:sender] cursor:[RBSplitView cursor:RBSVVerticalCursor]];
+	// Also show the cursor over the widened lowerSplit view.
+	} else if (sender==lowerSplit) {
+		BOOL ishor = [sender isHorizontal];
+		DIM(rect.origin) -= WIDEN;
+		DIM(rect.size) += WIDEN*2;
 	}
 	return rect;
 }
 
+// This draws a white bar into the divider for the lowerSplit view.
+- (NSRect)splitView:(RBSplitView*)sender willDrawDividerInRect:(NSRect)dividerRect betweenView:(RBSplitSubview*)leading andView:(RBSplitSubview*)trailing withProposedRect:(NSRect)imageRect {
+	if (sender==lowerSplit) {
+		[[NSColor whiteColor] set];
+		NSRectFill(dividerRect);
+		return NSZeroRect;
+	}
+	return imageRect;
+}
+
 // This collapses/expands the first subview with animation and resizing when double-clicking.
-- (BOOL)splitView:(RBSplitView*)sender shouldHandleEvent:(NSEvent*)theEvent inDivider:(unsigned int)divider betweenView:(RBSplitSubview*)leading andView:(RBSplitSubview*)trailing {
+- (BOOL)splitView:(RBSplitView*)sender shouldHandleEvent:(NSEvent*)theEvent inDivider:(NSUInteger)divider betweenView:(RBSplitSubview*)leading andView:(RBSplitSubview*)trailing {
 	if ((sender==mySplitView)&&(divider==0)&&([theEvent clickCount]>1)) {
 		if ([leading isCollapsed]) {
 			[leading expandWithAnimation:YES withResize:YES];
@@ -156,6 +174,11 @@
 	} else {
 		[secondSplit setHidden:YES];
 	}
+}
+
+// Standard delegate method to quit when the window is closed.
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)theApplication {
+	return YES;
 }
 
 @end
